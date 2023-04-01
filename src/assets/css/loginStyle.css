@@ -39,7 +39,7 @@ input {
   z-index: 5;
 }
 
-el-form {
+form {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,12 +51,12 @@ el-form {
   grid-row: 1 / 2;
 }
 
-el-form.sign-up-form {
+form.sign-up-form {
   opacity: 0;
   z-index: 1;
 }
 
-el-form.sign-in-form {
+form.sign-in-form {
   z-index: 2;
 }
 
@@ -91,6 +91,8 @@ el-form.sign-in-form {
   background: none;
   outline: none;
   border: none;
+  margin-top: 8px;
+  margin-left: -12px;
   line-height: 1;
   font-weight: 600;
   font-size: 1.1rem;

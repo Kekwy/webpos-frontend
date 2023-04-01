@@ -4,9 +4,7 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
-import axios from 'axios'
 import {deleteRequest, getRequest, postRequest, putRequest} from "@/utils/api";
-Vue.prototype.$axios = axios
 
 // 是否在浏览器控制台提示开发环境
 Vue.config.productionTip = false
