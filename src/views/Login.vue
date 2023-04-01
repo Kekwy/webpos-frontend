@@ -64,9 +64,7 @@
               <el-input v-model="registerForm.checkPass" placeholder="确认密码" type="password"/>
             </el-form-item>
           </div>
-
-          <input type="submit" class="btn" value="register"/>
-
+          <input class="btn solid" type="button" value="Register" @click="submitRegister"/>
         </el-form>
       </div>
     </div>
@@ -90,7 +88,7 @@
           <p>
             点击 “登录” 使用已有账号。
           </p>
-          <button class="btn transparent" id="sign-in-btn">
+          <button class="btn transparent" id="sign-in-btn" ref="sign_in_btn">
             登录
           </button>
         </div>
@@ -190,12 +188,13 @@ export default {
           // 使用响应拦截器对请求进行封装，避免反复编写 axios 代码
           // alert(1111);
           this.loading = true;
-          this.postRequest('/register', this.registerForm).then(resp => {
-            if (resp) {
-              this.loading = false;
-              this.$router.replace('/home');
-            }
-          })
+          this.$refs.sign_in_btn.dispatchEvent(new MouseEvent('click'));
+          // this.postRequest('/register', this.registerForm).then(resp => {
+          //   if (resp) {
+          //     this.loading = false;
+          //     this.sign_in_btn.click;
+          //   }
+          // })
         } else {
           console.log('error submit!!');
           this.$message.error('请输入所有字段');
