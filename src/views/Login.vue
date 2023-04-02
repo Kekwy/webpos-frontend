@@ -137,11 +137,11 @@ export default {
       },
       registerRules: {
         username: [{required: true, message: '请输入用户名', trigger: 'blur'},
-          {min:3, max:16, message: '用户名长度必须为 8 到 32 位', trigger: 'change'}],
+          {min: 3, max: 16, message: '用户名长度必须为 8 到 32 位', trigger: 'change'}],
         email: [{required: true, message: '请输入邮箱', trigger: 'blur'},
           {type: 'email', message: '邮箱格式错误', trigger: ['blur', 'change']}],
         password: [{required: true, message: '请输入密码', trigger: 'blur'},
-          {min:8, max:32, message: '密码长度必须为 8 到 32 位', trigger: 'change'},
+          {min: 8, max: 32, message: '密码长度必须为 8 到 32 位', trigger: 'change'},
           {validator: validatePass, trigger: 'blur'}],
         checkPass: [{required: true, message: '请再次输入密码', trigger: 'blur'},
           {validator: validatePass2, trigger: 'blur'}]
@@ -165,13 +165,13 @@ export default {
     submitLogin() {
       this.$refs.loginForm.validate((isValid) => {
         if (isValid) {
-          // 使用响应拦截器对请求进行封装，避免反复编写 axios 代码
           this.loading = true;
           this.postRequest('/login', this.loginForm).then(resp => {
             if (resp) {
               this.loading = false;
-              const tokenStr = resp.obj.tokenHead + resp.obj.token;
+              const tokenStr = resp.data.obj.tokenHead + resp.data.obj.token;
               window.sessionStorage.setItem('tokenStr', tokenStr);
+              this.$message.success("登录成功，欢迎 " + this.loginForm.username + " ！");
               this.$router.replace('/home');
             }
           })
@@ -185,16 +185,21 @@ export default {
     submitRegister() {
       this.$refs.registerForm.validate((isValid) => {
         if (isValid) {
-          // 使用响应拦截器对请求进行封装，避免反复编写 axios 代码
-          // alert(1111);
           this.loading = true;
-          this.$refs.sign_in_btn.dispatchEvent(new MouseEvent('click'));
-          // this.postRequest('/register', this.registerForm).then(resp => {
-          //   if (resp) {
-          //     this.loading = false;
-          //     this.sign_in_btn.click;
-          //   }
-          // })
+
+          this.postRequest('/register', this.registerForm).then(resp => {
+            if (resp) {
+              this.loading = false;
+              if (resp.code === 0) {
+                this.$message.success("注册成功");
+                this.$refs.sign_in_btn.dispatchEvent(new MouseEvent('click'));
+              } else if (resp.data.code === 1) {
+                this.$message.warning("用户名已存在");
+              } else {
+                this.$message.error(resp.date.message);
+              }
+            }
+          })
         } else {
           console.log('error submit!!');
           this.$message.error('请输入所有字段');
