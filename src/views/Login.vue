@@ -1,4 +1,5 @@
 <template>
+
   <div class="container">
     <div class="forms-container">
       <div class="signin-signup">
@@ -168,11 +169,19 @@ export default {
           this.loading = true;
           this.postRequest('/login', this.loginForm).then(resp => {
             if (resp) {
+              // this.$message.success(resp.data.code);
               this.loading = false;
-              const tokenStr = resp.data.obj.tokenHead + resp.data.obj.token;
-              window.sessionStorage.setItem('tokenStr', tokenStr);
-              this.$message.success("登录成功，欢迎 " + this.loginForm.username + " ！");
-              this.$router.replace('/home');
+              if (resp.data.code === 0) {
+                const tokenStr = resp.data.obj.tokenHead + resp.data.obj.token;
+                window.sessionStorage.setItem('tokenStr', tokenStr);
+                this.$message.success("登录成功，欢迎 " + this.loginForm.username + " ！");
+                this.$router.replace('/home');
+              } else if (resp.data.code === 1) {
+                this.$message.warning("用户名不存在");
+              } else {
+                this.$message.error(resp.date.message);
+              }
+
             }
           })
         } else {
@@ -190,7 +199,7 @@ export default {
           this.postRequest('/register', this.registerForm).then(resp => {
             if (resp) {
               this.loading = false;
-              if (resp.code === 0) {
+              if (resp.data.code === 0) {
                 this.$message.success("注册成功");
                 this.$refs.sign_in_btn.dispatchEvent(new MouseEvent('click'));
               } else if (resp.data.code === 1) {
@@ -211,7 +220,6 @@ export default {
 }
 </script>
 
-<style>
-@import '@/assets/css/loginStyle.css';
-
+<style lang="css" scoped>
+@import "@/assets/css/loginStyle.css";
 </style>
