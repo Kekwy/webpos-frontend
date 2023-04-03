@@ -121,6 +121,7 @@ export default {
       }
     };
     return {
+      title:"POS online | Login",
       loginForm: {
         username: '',
         password: ''
@@ -148,6 +149,9 @@ export default {
           {validator: validatePass2, trigger: 'blur'}]
       }
     }
+  },
+  created() {
+    document.title = this.title;
   },
   mounted() {
     this.sign_in_btn = document.querySelector("#sign-in-btn");
